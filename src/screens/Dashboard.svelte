@@ -2,7 +2,7 @@
   import * as Card from '$lib/components/ui/card';
   import { Badge } from '$lib/components/ui/badge';
   import { Button } from '$lib/components/ui/button';
-  import { Trash2, Server, User, Hash, Copy, Check, Plus } from '@lucide/svelte';
+  import { Trash2, Server, User, Hash, Copy, Check, Plus, Settings } from '@lucide/svelte';
   import { router } from '../router';
   import { userState } from '$lib/stores/user.svelte';
   import { swarmState } from '$lib/stores/swarm.svelte';
@@ -29,9 +29,15 @@
 
 <div class="min-h-screen p-6">
   <div class="max-w-4xl mx-auto space-y-6">
-    <div class="mb-2">
-      <h1 class="text-2xl font-bold">Swarm</h1>
-      <p class="text-sm text-muted-foreground">Manage your swarm</p>
+    <div class="mb-2 flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold">Swarm</h1>
+        <p class="text-sm text-muted-foreground">Manage your swarm</p>
+      </div>
+      <Button variant="outline" onclick={() => router.navigate('/settings')}>
+        <Settings class="w-4 h-4 mr-2" />
+        Configure Node
+      </Button>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">

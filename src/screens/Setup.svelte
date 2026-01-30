@@ -1,7 +1,25 @@
 <script lang="ts">
   import { Button } from '$lib/components/ui/button';
+  import { Input } from '$lib/components/ui/input';
+  import { Label } from '$lib/components/ui/label';
   import * as Card from '$lib/components/ui/card';
   import { User, Shield, Zap, Users } from '@lucide/svelte';
+  import { createUser, userState } from '$lib/stores/user.svelte';
+  import { router } from '../router';
+
+  let alias = $state('');
+
+  async function handleSubmit(e: Event) {
+    e.preventDefault();
+    if (!alias.trim()) return;
+
+    try {
+      await createUser(alias.trim());
+      router.navigate('/');
+    } catch {
+      // Error is already set in userState
+    }
+  }
 </script>
 
 <div class="h-screen flex flex-col items-center justify-center p-4">
@@ -15,10 +33,31 @@
         </div>
       </div>
 
-      <h2 class="text-lg font-bold text-center mb-1">No User Found</h2>
-      <p class="text-muted-foreground text-center text-xs mb-3">
-        Please create a user in your Astral node to continue.
+      <h2 class="text-lg font-bold text-center mb-1">Create Your Identity</h2>
+      <p class="text-muted-foreground text-center text-xs mb-4">
+        Choose an alias to get started with Astral.
       </p>
+
+      <form onsubmit={handleSubmit} class="space-y-4">
+        <div class="space-y-2">
+          <Label for="alias">Alias</Label>
+          <Input
+            id="alias"
+            type="text"
+            placeholder="Enter your alias"
+            bind:value={alias}
+            disabled={userState.loading}
+          />
+        </div>
+
+        {#if userState.error}
+          <p class="text-sm text-destructive">{userState.error}</p>
+        {/if}
+
+        <Button type="submit" class="w-full" disabled={userState.loading || !alias.trim()}>
+          {userState.loading ? 'Creating...' : 'Create Identity'}
+        </Button>
+      </form>
     </Card.Content>
   </Card.Root>
 

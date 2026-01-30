@@ -79,8 +79,22 @@ export interface Node {
   status: 'online' | 'pending' | 'offline';
 }
 
-// Connection types
-export interface Connection {
-  nodeId: string;
-  connectedAt: Date;
+
+export interface TreeValue<T = unknown> {
+  Type: string;
+  Object: T;
+}
+
+
+
+
+export interface TcpSettings {
+  listen: boolean;
+  dial: boolean;
+}
+
+export interface SettingsState {
+  tcp: TcpSettings;
+  loading: boolean;
+  error: string | null;
 }

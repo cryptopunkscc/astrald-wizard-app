@@ -20,3 +20,16 @@ export async function fetchUser() {
     userState.initialized = true;
   }
 }
+
+export async function createUser(alias: string) {
+  userState.loading = true;
+  userState.error = null;
+  try {
+    userState.user = await userApi.create(alias);
+  } catch (e) {
+    userState.error = e instanceof Error ? e.message : 'failed to create user';
+    throw e;
+  } finally {
+    userState.loading = false;
+  }
+}
